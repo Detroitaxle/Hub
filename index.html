@@ -3,366 +3,223 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dark Theme with Tabs</title>
-    <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <title>Date Difference Calculator</title>
     <style>
-        :root {
-            --accent-color: #FF5E14;
-            --dark-bg: #1A1A1A;
-            --darker-bg: #121212;
-            --text-color: #E0E0E0;
-            --text-muted: #A0A0A0;
-        }
-        
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-        
         body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background-color: var(--dark-bg);
-            color: var(--text-color);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #121212;
+            color: #f0f0f0;
+            margin: 0;
+            padding: 20px;
             display: flex;
+            flex-direction: column;
+            align-items: center;
             min-height: 100vh;
-            line-height: 1.5;
         }
         
-        .tab-container {
-            width: 220px;
-            background-color: var(--darker-bg);
-            padding: 20px 0;
-            min-height: 100vh;
-            flex-shrink: 0;
-        }
-        
-        .tab {
-            padding: 14px 20px;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            border-left: 4px solid transparent;
-            font-size: 15px;
-        }
-        
-        .tab:hover {
-            background-color: rgba(255, 94, 20, 0.1);
-            color: var(--accent-color);
-        }
-        
-        .tab.active {
-            border-left: 4px solid var(--accent-color);
-            background-color: rgba(255, 94, 20, 0.15);
-            color: var(--accent-color);
-            font-weight: 600;
-        }
-        
-        .content-container {
-            flex: 1;
-            padding: 30px;
-            overflow-y: auto;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-        
-        .content {
-            display: none;
-        }
-        
-        .content.active {
-            display: block;
-            animation: fadeIn 0.3s;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+        .container {
+            background-color: #1a1a1a;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+            width: 100%;
+            max-width: 500px;
+            border: 1px solid #333;
         }
         
         h1 {
-            color: var(--accent-color);
-            margin: 0 0 20px 0;
-            font-size: 28px;
-        }
-        
-        h2 {
-            margin: 0 0 15px 0;
-            font-size: 22px;
-        }
-        
-        h3 {
-            margin: 0 0 10px 0;
-            font-size: 18px;
-        }
-        
-        .card {
-            background-color: var(--darker-bg);
-            padding: 20px;
-            border-radius: 8px;
+            text-align: center;
+            color: #FF5E14;
             margin-bottom: 25px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+            font-weight: 600;
+            letter-spacing: 0.5px;
         }
         
-        button {
-            background-color: var(--accent-color);
-            color: white;
-            border: none;
-            padding: 10px 18px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: all 0.2s;
-            font-size: 15px;
-            font-weight: 500;
+        .input-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin-bottom: 20px;
         }
         
-        button:hover {
-            background-color: #e05510;
-            transform: translateY(-1px);
-        }
-        
-        input, textarea, select {
-            background-color: #2A2A2A;
-            border: 1px solid #333;
-            color: var(--text-color);
-            padding: 10px 12px;
-            border-radius: 5px;
-            width: 100%;
-            margin-bottom: 15px;
-            font-size: 15px;
-            transition: border 0.2s;
-        }
-        
-        input:focus, textarea:focus, select:focus {
-            outline: none;
-            border-color: var(--accent-color);
+        .input-group {
+            display: flex;
+            flex-direction: column;
         }
         
         label {
             display: block;
-            margin-bottom: 6px;
+            margin-bottom: 8px;
+            color: #FF5E14;
             font-weight: 500;
+            font-size: 15px;
         }
         
-        table {
+        input[type="date"] {
             width: 100%;
-            border-collapse: collapse;
-            margin: 15px 0;
-        }
-        
-        th, td {
-            padding: 12px 15px;
-            text-align: left;
-            border-bottom: 1px solid #333;
-        }
-        
-        th {
-            background-color: #252525;
-            color: var(--accent-color);
-            font-weight: 600;
-        }
-        
-        tr:hover {
-            background-color: #252525;
-        }
-        
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 20px;
-            margin: 20px 0;
-        }
-        
-        .grid-item {
-            background-color: #2A2A2A;
+            padding: 12px;
             border-radius: 8px;
-            overflow: hidden;
+            border: 1px solid #444;
+            background-color: #252525;
+            color: #f0f0f0;
+            font-size: 16px;
+            transition: border-color 0.3s;
+            box-sizing: border-box;
         }
         
-        @media (max-width: 768px) {
-            body {
-                flex-direction: column;
-            }
-            
-            .tab-container {
-                width: 100%;
-                min-height: auto;
-                display: flex;
-                overflow-x: auto;
-                padding: 0;
-            }
-            
-            .tab {
-                padding: 12px 16px;
-                border-left: none;
-                border-bottom: 3px solid transparent;
-                white-space: nowrap;
-            }
-            
-            .tab.active {
-                border-left: none;
-                border-bottom: 3px solid var(--accent-color);
-            }
-            
-            .content-container {
-                padding: 20px;
-            }
+        input[type="date"]:focus {
+            outline: none;
+            border-color: #FF5E14;
+        }
+        
+        .results-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 25px;
+        }
+        
+        .result-box {
+            background-color: #252525;
+            border-radius: 8px;
+            padding: 18px;
+            border-left: 5px solid #FF5E14;
+        }
+        
+        .result-title {
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #FF5E14;
+            font-size: 16px;
+        }
+        
+        .result-value {
+            font-size: 28px;
+            font-weight: 700;
+        }
+        
+        button {
+            background-color: #FF5E14;
+            color: #121212;
+            border: none;
+            padding: 14px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            width: 100%;
+            margin-top: 15px;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        button:hover {
+            background-color: #ff4500;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(255, 94, 20, 0.3);
+        }
+        
+        button:active {
+            transform: translateY(0);
+        }
+        
+        /* Custom date picker styling */
+        input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(1);
+            cursor: pointer;
+            padding: 4px;
         }
     </style>
 </head>
 <body>
-    <div class="tab-container">
-        <div class="tab active" onclick="switchTab('forms')">Forms</div>
-        <div class="tab" onclick="switchTab('cards')">Cards</div>
-        <div class="tab" onclick="switchTab('tables')">Tables</div>
-        <div class="tab" onclick="switchTab('media')">Media</div>
+    <div class="container">
+        <h1>Date Difference Calculator</h1>
+        
+        <div class="input-container">
+            <div class="input-group">
+                <label for="start-date">Start Date:</label>
+                <input type="date" id="start-date">
+            </div>
+            
+            <div class="input-group">
+                <label for="end-date">End Date:</label>
+                <input type="date" id="end-date">
+            </div>
+        </div>
+        
+        <button id="calculate-btn">Calculate Difference</button>
+        
+        <div class="results-container">
+            <div class="result-box">
+                <div class="result-title">Total Days:</div>
+                <div class="result-value" id="total-days">0</div>
+            </div>
+            
+            <div class="result-box">
+                <div class="result-title">Business Days:</div>
+                <div class="result-value" id="business-days">0</div>
+            </div>
+        </div>
     </div>
-    
-    <div class="content-container">
-        <!-- ========== FORMS TAB CONTENT - REPLACE BELOW ========== -->
-        <div id="forms" class="content active">
-            <h1>Form Components</h1>
-            
-            <div class="card">
-                <h2>Contact Form</h2>
-                <form>
-                    <div>
-                        <label for="name">Full Name</label>
-                        <input type="text" id="name" placeholder="John Doe" required>
-                    </div>
-                    <div>
-                        <label for="email">Email Address</label>
-                        <input type="email" id="email" placeholder="john@example.com" required>
-                    </div>
-                    <div>
-                        <label for="subject">Subject</label>
-                        <select id="subject">
-                            <option value="">Select a subject</option>
-                            <option value="support">Support</option>
-                            <option value="sales">Sales</option>
-                            <option value="feedback">Feedback</option>
-                        </select>
-                    </div>
-                    <div>
-                        <label for="message">Your Message</label>
-                        <textarea id="message" rows="5" placeholder="How can we help you?" required></textarea>
-                    </div>
-                    <button type="submit">Send Message</button>
-                </form>
-            </div>
-        </div>
-        <!-- ========== FORMS TAB CONTENT - REPLACE ABOVE ========== -->
-        
-        <!-- ========== CARDS TAB CONTENT - REPLACE BELOW ========== -->
-        <div id="cards" class="content">
-            <h1>Card Components</h1>
-            
-            <div class="card">
-                <h2>Product Cards</h2>
-                <div class="grid">
-                    <div class="grid-item" style="padding: 20px;">
-                        <h3 style="color: var(--accent-color);">Premium Plan</h3>
-                        <p style="font-size: 24px; margin: 10px 0 15px;">$19.99/mo</p>
-                        <ul style="padding-left: 20px; margin-bottom: 20px;">
-                            <li style="margin-bottom: 8px;">Unlimited projects</li>
-                            <li style="margin-bottom: 8px;">Advanced analytics</li>
-                            <li style="margin-bottom: 8px;">Priority support</li>
-                        </ul>
-                        <button style="width: 100%;">Get Started</button>
-                    </div>
-                    
-                    <div class="grid-item" style="padding: 20px;">
-                        <h3 style="color: var(--accent-color);">Basic Plan</h3>
-                        <p style="font-size: 24px; margin: 10px 0 15px;">$9.99/mo</p>
-                        <ul style="padding-left: 20px; margin-bottom: 20px;">
-                            <li style="margin-bottom: 8px;">5 projects</li>
-                            <li style="margin-bottom: 8px;">Basic analytics</li>
-                            <li style="margin-bottom: 8px;">Email support</li>
-                        </ul>
-                        <button style="width: 100%;">Get Started</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- ========== CARDS TAB CONTENT - REPLACE ABOVE ========== -->
-        
-        <!-- ========== TABLES TAB CONTENT - REPLACE BELOW ========== -->
-        <div id="tables" class="content">
-            <h1>Table Components</h1>
-            
-            <div class="card">
-                <h2>User Management</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Status</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>John Smith</td>
-                            <td>john@example.com</td>
-                            <td><span style="color: #4CAF50;">Active</span></td>
-                            <td><button style="padding: 5px 10px; font-size: 13px;">Edit</button></td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Sarah Johnson</td>
-                            <td>sarah@example.com</td>
-                            <td><span style="color: #4CAF50;">Active</span></td>
-                            <td><button style="padding: 5px 10px; font-size: 13px;">Edit</button></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-        <!-- ========== TABLES TAB CONTENT - REPLACE ABOVE ========== -->
-        
-        <!-- ========== MEDIA TAB CONTENT - REPLACE BELOW ========== -->
-        <div id="media" class="content">
-            <h1>Media Components</h1>
-            
-            <div class="card">
-                <h2>Image Gallery</h2>
-                <div class="grid">
-                    <div class="grid-item" style="aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; color: var(--text-muted);">
-                        Gallery Image 1
-                    </div>
-                    <div class="grid-item" style="aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; color: var(--text-muted);">
-                        Gallery Image 2
-                    </div>
-                    <div class="grid-item" style="aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; color: var(--text-muted);">
-                        Gallery Image 3
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!-- ========== MEDIA TAB CONTENT - REPLACE ABOVE ========== -->
-    </div>
-    
+
     <script>
-        function switchTab(tabId) {
-            // Hide all content
-            document.querySelectorAll('.content').forEach(content => {
-                content.classList.remove('active');
-            });
+        document.getElementById('calculate-btn').addEventListener('click', calculateDateDifference);
+        
+        // Set default dates to today and tomorrow
+        const today = new Date();
+        const tomorrow = new Date();
+        tomorrow.setDate(today.getDate() + 1);
+        
+        // Format dates for input fields (YYYY-MM-DD)
+        function formatDate(date) {
+            const year = date.getFullYear();
+            const month = String(date.getMonth() + 1).padStart(2, '0');
+            const day = String(date.getDate()).padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        }
+        
+        document.getElementById('start-date').value = formatDate(today);
+        document.getElementById('end-date').value = formatDate(tomorrow);
+        
+        function calculateDateDifference() {
+            const startDate = new Date(document.getElementById('start-date').value);
+            const endDate = new Date(document.getElementById('end-date').value);
             
-            // Remove active class from all tabs
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
+            if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+                alert('Please select valid dates for both fields');
+                return;
+            }
             
-            // Show selected content
-            document.getElementById(tabId).classList.add('active');
+            // Calculate total days
+            const timeDiff = endDate.getTime() - startDate.getTime();
+            const totalDays = Math.ceil(timeDiff / (1000 * 3600 * 24)) + 1;
+            document.getElementById('total-days').textContent = totalDays;
             
-            // Add active class to clicked tab
-            event.currentTarget.classList.add('active');
+            // Calculate business days
+            const businessDays = calculateBusinessDays(startDate, endDate);
+            document.getElementById('business-days').textContent = businessDays;
+        }
+        
+        function calculateBusinessDays(startDate, endDate) {
+            let count = 0;
+            const current = new Date(startDate);
+            
+            // Swap dates if start is after end
+            if (startDate > endDate) {
+                [startDate, endDate] = [endDate, startDate];
+                current.setTime(startDate.getTime());
+            }
+            
+            while (current <= endDate) {
+                const dayOfWeek = current.getDay();
+                if (dayOfWeek !== 0 && dayOfWeek !== 6) { // Not Sunday or Saturday
+                    count++;
+                }
+                current.setDate(current.getDate() + 1);
+            }
+            
+            return count;
         }
     </script>
 </body>
