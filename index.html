@@ -1,1 +1,270 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dark Theme with Tabs</title>
+    <style>
+        :root {
+            --accent-color: #FF5E14;
+            --dark-bg: #1A1A1A;
+            --darker-bg: #121212;
+            --text-color: #E0E0E0;
+            --text-muted: #A0A0A0;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-color);
+            display: flex;
+            min-height: 100vh;
+        }
+        
+        .tab-container {
+            width: 200px;
+            background-color: var(--darker-bg);
+            padding: 20px 0;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+        
+        .tab {
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+        
+        .tab:hover {
+            background-color: rgba(255, 94, 20, 0.1);
+            color: var(--accent-color);
+        }
+        
+        .tab.active {
+            border-left: 4px solid var(--accent-color);
+            background-color: rgba(255, 94, 20, 0.2);
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+        
+        .content-container {
+            flex: 1;
+            padding: 30px;
+            overflow-y: auto;
+        }
+        
+        .content {
+            display: none;
+        }
+        
+        .content.active {
+            display: block;
+            animation: fadeIn 0.5s;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        
+        h1 {
+            color: var(--accent-color);
+            margin-top: 0;
+        }
+        
+        .card {
+            background-color: var(--darker-bg);
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        button {
+            background-color: var(--accent-color);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        button:hover {
+            background-color: #e05510;
+        }
+        
+        input, textarea {
+            background-color: #2A2A2A;
+            border: 1px solid #333;
+            color: var(--text-color);
+            padding: 10px;
+            border-radius: 4px;
+            width: 100%;
+            box-sizing: border-box;
+            margin-bottom: 15px;
+        }
+        
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #333;
+        }
+        
+        th {
+            background-color: #2A2A2A;
+            color: var(--accent-color);
+        }
+        
+        tr:hover {
+            background-color: #2A2A2A;
+        }
+    </style>
+</head>
+<body>
+    <div class="tab-container">
+        <div class="tab active" onclick="switchTab('forms')">Forms</div>
+        <div class="tab" onclick="switchTab('cards')">Cards</div>
+        <div class="tab" onclick="switchTab('tables')">Tables</div>
+        <div class="tab" onclick="switchTab('media')">Media</div>
+    </div>
+    
+    <div class="content-container">
+        <!-- ========== FORMS TAB CONTENT STARTS HERE ========== -->
+        <div id="forms" class="content active">
+            <h1>Form Components</h1>
+            
+            <div class="card">
+                <h2>Contact Form</h2>
+                <form>
+                    <div>
+                        <label for="name">Name</label>
+                        <input type="text" id="name" placeholder="Enter your name">
+                    </div>
+                    <div>
+                        <label for="email">Email</label>
+                        <input type="email" id="email" placeholder="Enter your email">
+                    </div>
+                    <div>
+                        <label for="message">Message</label>
+                        <textarea id="message" rows="4" placeholder="Your message here"></textarea>
+                    </div>
+                    <button type="submit">Submit</button>
+                </form>
+            </div>
+        </div>
+        <!-- ========== FORMS TAB CONTENT ENDS HERE ========== -->
+        
+        <!-- ========== CARDS TAB CONTENT STARTS HERE ========== -->
+        <div id="cards" class="content">
+            <h1>Card Components</h1>
+            
+            <div class="card">
+                <h2>Product Card</h2>
+                <div style="display: flex; gap: 20px; flex-wrap: wrap;">
+                    <div style="flex: 1; min-width: 250px; background-color: #2A2A2A; padding: 20px; border-radius: 8px;">
+                        <h3 style="color: var(--accent-color); margin-top: 0;">Premium Plan</h3>
+                        <p style="font-size: 24px; margin: 10px 0;">$19.99/month</p>
+                        <ul style="padding-left: 20px;">
+                            <li>Unlimited projects</li>
+                            <li>Advanced analytics</li>
+                            <li>24/7 support</li>
+                        </ul>
+                        <button style="width: 100%; margin-top: 15px;">Subscribe</button>
+                    </div>
+                    
+                    <div style="flex: 1; min-width: 250px; background-color: #2A2A2A; padding: 20px; border-radius: 8px;">
+                        <h3 style="color: var(--accent-color); margin-top: 0;">Basic Plan</h3>
+                        <p style="font-size: 24px; margin: 10px 0;">$9.99/month</p>
+                        <ul style="padding-left: 20px;">
+                            <li>5 projects</li>
+                            <li>Basic analytics</li>
+                            <li>Email support</li>
+                        </ul>
+                        <button style="width: 100%; margin-top: 15px;">Subscribe</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ========== CARDS TAB CONTENT ENDS HERE ========== -->
+        
+        <!-- ========== TABLES TAB CONTENT STARTS HERE ========== -->
+        <div id="tables" class="content">
+            <h1>Table Components</h1>
+            
+            <div class="card">
+                <h2>User Data Table</h2>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>John Smith</td>
+                            <td>john@example.com</td>
+                            <td><span style="color: #4CAF50;">Active</span></td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>Sarah Johnson</td>
+                            <td>sarah@example.com</td>
+                            <td><span style="color: #4CAF50;">Active</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- ========== TABLES TAB CONTENT ENDS HERE ========== -->
+        
+        <!-- ========== MEDIA TAB CONTENT STARTS HERE ========== -->
+        <div id="media" class="content">
+            <h1>Media Components</h1>
+            
+            <div class="card">
+                <h2>Image Gallery</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 15px;">
+                    <div style="background-color: #2A2A2A; aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; color: var(--text-muted); border-radius: 8px;">Image 1</div>
+                    <div style="background-color: #2A2A2A; aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; color: var(--text-muted); border-radius: 8px;">Image 2</div>
+                    <div style="background-color: #2A2A2A; aspect-ratio: 1/1; display: flex; align-items: center; justify-content: center; color: var(--text-muted); border-radius: 8px;">Image 3</div>
+                </div>
+            </div>
+        </div>
+        <!-- ========== MEDIA TAB CONTENT ENDS HERE ========== -->
+    </div>
+    
+    <script>
+        function switchTab(tabId) {
+            // Hide all content
+            document.querySelectorAll('.content').forEach(content => {
+                content.classList.remove('active');
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected content
+            document.getElementById(tabId).classList.add('active');
+            
+            // Add active class to clicked tab
+            event.currentTarget.classList.add('active');
+        }
+    </script>
+</body>
+</html>
