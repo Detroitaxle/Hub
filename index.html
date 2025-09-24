@@ -1,1021 +1,290 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Date Difference Calculator - Professional Edition</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        :root {
-            --primary-color: #ff7b25;
-            --primary-light: #ff9d5c;
-            --primary-dark: #e55a00;
-            --secondary-color: #ff7b25;
-            --success-color: #27ae60;
-            --error-color: #e74c3c;
-            --warning-color: #f39c12;
-            --background-primary: #1a1a1a;
-            --background-secondary: #2d2d2d;
-            --background-tertiary: #404040;
-            --surface-primary: #2d2d2d;
-            --surface-secondary: #404040;
-            --text-primary: #f5f5f5;
-            --text-secondary: #cccccc;
-            --text-muted: #999999;
-            --border-color: #555555;
-            --border-focus: var(--primary-color);
-            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.1);
-            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.15), 0 2px 4px -1px rgba(0, 0, 0, 0.08);
-            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.15), 0 4px 6px -2px rgba(0, 0, 0, 0.08);
-            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.15), 0 10px 10px -5px rgba(0, 0, 0, 0.06);
-            --gradient-primary: linear-gradient(135deg, #ff7b25 0%, #ff9d5c 100%);
-            --gradient-secondary: linear-gradient(135deg, #ff9d5c 0%, #ff7b25 100%);
-            --gradient-accent: linear-gradient(135deg, #ff7b25 0%, #ff9d5c 100%);
-            --radius-sm: 4px;
-            --radius-md: 8px;
-            --radius-lg: 12px;
-            --radius-xl: 16px;
-            --spacing-unit: 8px;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Date Difference Calculator - Professional Edition</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary-color: #2563eb;
+      --primary-hover: #1d4ed8;
+      --bg-dark: #0f172a;
+      --bg-card: #1e293b;
+      --bg-input: #334155;
+      --text-primary: #f8fafc;
+      --text-secondary: #cbd5e1;
+      --border-color: #334155;
+      --success-color: #22c55e;
+      --error-color: #ef4444;
+      --spacing-unit: 0.5rem;
+      --radius-lg: 0.75rem;
+      --radius-full: 9999px;
+      --transition-base: all 0.2s ease-in-out;
+    }
 
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
 
-        body {
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-            background: var(--background-primary);
-            color: var(--text-primary);
-            min-height: 100vh;
-            line-height: 1.6;
-            -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-        }
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-primary);
+      line-height: 1.5;
+    }
 
-        .app-container {
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            padding: calc(var(--spacing-unit) * 3);
-        }
+    .app-container {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      padding: calc(var(--spacing-unit) * 3);
+    }
 
-        /* Header */
-        .app-header {
-            text-align: center;
-            margin-bottom: calc(var(--spacing-unit) * 6);
-            animation: fadeInDown 0.8s ease-out;
-        }
+    .main-container {
+      flex: 1;
+      display: grid;
+      gap: calc(var(--spacing-unit) * 3);
+      max-width: 1000px;
+      width: 100%;
+      margin: 0 auto;
+    }
 
-        .app-title {
-            font-size: clamp(2rem, 5vw, 3.5rem);
-            font-weight: 700;
-            color: var(--primary-color);
-            margin-bottom: calc(var(--spacing-unit) * 1);
-            letter-spacing: -0.02em;
-        }
+    .card {
+      background: var(--bg-card);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-color);
+      padding: calc(var(--spacing-unit) * 4);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.25);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
 
-        .app-subtitle {
-            font-size: 1.1rem;
-            color: var(--text-secondary);
-            font-weight: 400;
-            max-width: 600px;
-            margin: 0 auto;
-        }
+    .card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(0,0,0,0.35);
+    }
 
-        /* Main Container */
-        .main-container {
-            max-width: 1200px;
-            margin: 0 auto;
-            width: 100%;
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: calc(var(--spacing-unit) * 4);
-            animation: fadeInUp 0.8s ease-out 0.2s both;
-        }
+    .card-header {
+      margin-bottom: calc(var(--spacing-unit) * 3);
+    }
 
-        @media (min-width: 768px) {
-            .main-container {
-                grid-template-columns: 1fr 1fr;
-            }
-        }
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
 
-        /* Cards */
-        .card {
-            background: var(--surface-primary);
-            border-radius: var(--radius-lg);
-            border: 1px solid var(--border-color);
-            box-shadow: var(--shadow-md);
-            overflow: hidden;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: calc(var(--spacing-unit) * 1.5);
+      margin-bottom: calc(var(--spacing-unit) * 3);
+    }
 
-        .card:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-lg);
-            border-color: var(--primary-color);
-        }
+    .form-label {
+      font-size: 0.875rem;
+      color: var(--text-secondary);
+      font-weight: 500;
+    }
 
-        .card-header {
-            padding: calc(var(--spacing-unit) * 3);
-            border-bottom: 1px solid var(--border-color);
-            background: var(--surface-secondary);
-        }
+    .form-input {
+      padding: calc(var(--spacing-unit) * 2) calc(var(--spacing-unit) * 2.5);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-color);
+      background: var(--bg-input);
+      color: var(--text-primary);
+      font-size: 0.95rem;
+      transition: var(--transition-base);
+    }
 
-        .card-title {
-            font-size: 1.25rem;
-            font-weight: 600;
-            color: var(--text-primary);
-            display: flex;
-            align-items: center;
-            gap: calc(var(--spacing-unit) * 1);
-        }
+    .form-input:focus {
+      outline: none;
+      border-color: var(--primary-color);
+      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.3);
+    }
 
-        .card-body {
-            padding: calc(var(--spacing-unit) * 3);
-        }
+    .button {
+      padding: calc(var(--spacing-unit) * 2) calc(var(--spacing-unit) * 4);
+      border-radius: var(--radius-lg);
+      border: none;
+      background: var(--primary-color);
+      color: white;
+      font-weight: 500;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: var(--transition-base);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: calc(var(--spacing-unit) * 1.5);
+    }
 
-        /* Form Styling */
-        .form-container {
-            display: flex;
-            flex-direction: column;
-            gap: calc(var(--spacing-unit) * 3);
-        }
+    .button:hover {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+    }
 
-        .input-group {
-            position: relative;
-        }
+    .results-grid {
+      display: grid;
+      gap: calc(var(--spacing-unit) * 2);
+    }
 
-        .floating-label {
-            position: absolute;
-            left: calc(var(--spacing-unit) * 2);
-            top: 50%;
-            transform: translateY(-50%);
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            font-weight: 500;
-            pointer-events: none;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            background: var(--surface-primary);
-            padding: 0 calc(var(--spacing-unit) * 1);
-            border-radius: var(--radius-sm);
-        }
+    .result-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: calc(var(--spacing-unit) * 2) calc(var(--spacing-unit) * 3);
+      border-radius: var(--radius-lg);
+      background: var(--bg-input);
+      border: 1px solid var(--border-color);
+      transition: var(--transition-base);
+    }
 
-        .form-input {
-            width: 100%;
-            padding: calc(var(--spacing-unit) * 2) calc(var(--spacing-unit) * 2);
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-md);
-            background: var(--surface-primary);
-            color: var(--text-primary);
-            font-size: 1rem;
-            font-weight: 500;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            outline: none;
-        }
+    .result-item:hover {
+      border-color: var(--primary-color);
+      transform: translateX(2px);
+    }
 
-        .form-input:focus,
-        .form-input:not(:placeholder-shown) {
-            border-color: var(--border-focus);
-            box-shadow: 0 0 0 2px rgba(255, 123, 37, 0.1);
-        }
+    .result-label {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+    }
 
-        .form-input:focus + .floating-label,
-        .form-input:not(:placeholder-shown) + .floating-label {
-            top: 0;
-            font-size: 0.75rem;
-            color: var(--primary-color);
-            font-weight: 600;
-        }
+    .result-value {
+      font-weight: 600;
+      color: var(--text-primary);
+      cursor: pointer;
+      transition: var(--transition-base);
+    }
 
-        .form-input:invalid {
-            border-color: var(--error-color);
-        }
+    .result-value:hover {
+      color: var(--primary-color);
+    }
 
-        .error-message {
-            color: var(--error-color);
-            font-size: 0.8rem;
-            margin-top: calc(var(--spacing-unit) * 1);
-            opacity: 0;
-            transform: translateY(-4px);
-            transition: all 0.3s ease;
-        }
+    .success-message {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--success-color);
+      color: white;
+      padding: 12px 20px;
+      border-radius: var(--radius-lg);
+      font-size: 0.9rem;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: all 0.3s ease;
+      pointer-events: none;
+      z-index: 100;
+    }
 
-        .error-message.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
+    .success-message.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
 
-        /* Preset Buttons */
-        .preset-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
-            gap: calc(var(--spacing-unit) * 1);
-            margin-bottom: calc(var(--spacing-unit) * 2);
-        }
-
-        .preset-btn {
-            padding: calc(var(--spacing-unit) * 1) calc(var(--spacing-unit) * 2);
-            border: 1px solid var(--border-color);
-            border-radius: var(--radius-md);
-            background: transparent;
-            color: var(--text-secondary);
-            font-size: 0.8rem;
-            font-weight: 500;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-
-        .preset-btn:hover {
-            border-color: var(--primary-color);
-            color: var(--primary-color);
-            background: rgba(255, 123, 37, 0.05);
-        }
-
-        /* Action Buttons */
-        .action-buttons {
-            display: flex;
-            gap: calc(var(--spacing-unit) * 2);
-            margin-top: calc(var(--spacing-unit) * 2);
-        }
-
-        .btn {
-            padding: calc(var(--spacing-unit) * 2) calc(var(--spacing-unit) * 3);
-            border-radius: var(--radius-md);
-            font-size: 1rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            border: none;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: calc(var(--spacing-unit) * 1);
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn-primary {
-            background: var(--primary-color);
-            color: white;
-            flex: 1;
-        }
-
-        .btn-primary:hover {
-            background: var(--primary-dark);
-            transform: translateY(-1px);
-            box-shadow: 0 5px 15px rgba(255, 123, 37, 0.2);
-        }
-
-        .btn-secondary {
-            background: transparent;
-            color: var(--text-secondary);
-            border: 1px solid var(--border-color);
-        }
-
-        .btn-secondary:hover {
-            background: var(--surface-secondary);
-            color: var(--text-primary);
-            border-color: var(--primary-color);
-        }
-
-        .btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none !important;
-        }
-
-        .btn-loading {
-            pointer-events: none;
-        }
-
-        .loading-spinner {
-            width: 16px;
-            height: 16px;
-            border: 2px solid transparent;
-            border-top: 2px solid currentColor;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        /* Results Section */
-        .results-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: calc(var(--spacing-unit) * 2);
-        }
-
-        .result-card {
-            background: var(--surface-secondary);
-            border-radius: var(--radius-md);
-            padding: calc(var(--spacing-unit) * 3);
-            border: 1px solid var(--border-color);
-            position: relative;
-            overflow: hidden;
-            transition: all 0.3s ease;
-        }
-
-        .result-card:hover {
-            transform: translateY(-2px);
-            box-shadow: var(--shadow-md);
-            border-color: var(--primary-color);
-        }
-
-        .result-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 2px;
-            background: var(--primary-color);
-        }
-
-        .result-label {
-            font-size: 0.9rem;
-            font-weight: 500;
-            color: var(--text-secondary);
-            margin-bottom: calc(var(--spacing-unit) * 1);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
-
-        .result-value {
-            font-size: 2.5rem;
-            font-weight: 700;
-            color: var(--primary-color);
-            margin-bottom: calc(var(--spacing-unit) * 1);
-            font-feature-settings: 'tnum';
-            line-height: 1;
-        }
-
-        .result-unit {
-            font-size: 0.8rem;
-            color: var(--text-muted);
-            font-weight: 500;
-        }
-
-        .copy-btn {
-            position: absolute;
-            top: calc(var(--spacing-unit) * 1);
-            right: calc(var(--spacing-unit) * 1);
-            padding: calc(var(--spacing-unit) * 1);
-            background: rgba(255, 123, 37, 0.1);
-            border: none;
-            border-radius: var(--radius-sm);
-            color: var(--primary-color);
-            cursor: pointer;
-            opacity: 0;
-            transition: all 0.3s ease;
-        }
-
-        .result-card:hover .copy-btn {
-            opacity: 1;
-        }
-
-        .copy-btn:hover {
-            background: rgba(255, 123, 37, 0.2);
-        }
-
-        /* Animations */
-        @keyframes fadeInDown {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes fadeInUp {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        @keyframes spin {
-            to {
-                transform: rotate(360deg);
-            }
-        }
-
-        @keyframes countUp {
-            from {
-                transform: translateY(20px);
-                opacity: 0;
-            }
-            to {
-                transform: translateY(0);
-                opacity: 1;
-            }
-        }
-
-        .animate-count {
-            animation: countUp 0.6s ease-out;
-        }
-
-        /* Tooltips */
-        .tooltip {
-            position: relative;
-            cursor: help;
-        }
-
-        .tooltip::after {
-            content: attr(data-tooltip);
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            background: var(--background-secondary);
-            color: var(--text-primary);
-            padding: calc(var(--spacing-unit) * 1) calc(var(--spacing-unit) * 2);
-            border-radius: var(--radius-md);
-            font-size: 0.8rem;
-            white-space: nowrap;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.3s ease;
-            z-index: 1000;
-            border: 1px solid var(--border-color);
-            box-shadow: var(--shadow-lg);
-        }
-
-        .tooltip:hover::after {
-            opacity: 1;
-        }
-
-        /* Responsive Design */
-        @media (max-width: 767px) {
-            .app-container {
-                padding: calc(var(--spacing-unit) * 2);
-            }
-            
-            .main-container {
-                grid-template-columns: 1fr;
-                gap: calc(var(--spacing-unit) * 3);
-            }
-            
-            .action-buttons {
-                flex-direction: column;
-            }
-            
-            .preset-container {
-                grid-template-columns: repeat(2, 1fr);
-            }
-            
-            .results-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-
-        /* High Contrast Support */
-        @media (prefers-contrast: high) {
-            :root {
-                --border-color: #fff;
-                --text-secondary: #fff;
-                --background-secondary: #000;
-            }
-        }
-
-        /* Reduced Motion Support */
-        @media (prefers-reduced-motion: reduce) {
-            * {
-                animation-duration: 0.01ms !important;
-                animation-iteration-count: 1 !important;
-                transition-duration: 0.01ms !important;
-            }
-        }
-
-        /* Focus Visible */
-        .btn:focus-visible,
-        .form-input:focus-visible,
-        .preset-btn:focus-visible {
-            outline: 2px solid var(--primary-color);
-            outline-offset: 2px;
-        }
-
-        /* Success Message */
-        .success-message {
-            position: fixed;
-            top: calc(var(--spacing-unit) * 3);
-            right: calc(var(--spacing-unit) * 3);
-            background: var(--primary-color);
-            color: white;
-            padding: calc(var(--spacing-unit) * 2) calc(var(--spacing-unit) * 3);
-            border-radius: var(--radius-md);
-            font-weight: 500;
-            box-shadow: var(--shadow-lg);
-            transform: translateX(400px);
-            transition: transform 0.3s ease;
-            z-index: 1000;
-        }
-
-        .success-message.show {
-            transform: translateX(0);
-        }
-    </style>
+    @media (max-width: 640px) {
+      .app-container {
+        padding: var(--spacing-unit);
+      }
+      .card {
+        padding: calc(var(--spacing-unit) * 3);
+      }
+    }
+  </style>
 </head>
 <body>
-    <div class="app-container">
-        <!-- Header -->
-        <header class="app-header">
-            <h1 class="app-title">Date Difference Calculator</h1>
-            <p class="app-subtitle">Professional edition with advanced features and minimalist design</p>
-        </header>
-
-        <!-- Main Content -->
-        <main class="main-container">
-            <!-- Date Selection Card -->
-            <div class="card">
-                <div class="card-header">
-                    <h2 class="card-title">
-                        Date Selection
-                    </h2>
-                </div>
-                <div class="card-body">
-                    <form class="form-container" id="date-form">
-                        <!-- Preset Options -->
-                        <div class="preset-container">
-                            <button type="button" class="preset-btn" data-preset="today">Today</button>
-                            <button type="button" class="preset-btn" data-preset="week">This Week</button>
-                            <button type="button" class="preset-btn" data-preset="month">This Month</button>
-                            <button type="button" class="preset-btn" data-preset="year">This Year</button>
-                        </div>
-
-                        <!-- Start Date Input -->
-                        <div class="input-group">
-                            <input 
-                                type="date" 
-                                id="start-date" 
-                                class="form-input" 
-                                placeholder=" "
-                                aria-label="Start date for calculation"
-                                required
-                            >
-                            <label for="start-date" class="floating-label">Start Date</label>
-                            <div class="error-message" id="start-date-error"></div>
-                        </div>
-
-                        <!-- End Date Input -->
-                        <div class="input-group">
-                            <input 
-                                type="date" 
-                                id="end-date" 
-                                class="form-input" 
-                                placeholder=" "
-                                aria-label="End date for calculation"
-                                required
-                            >
-                            <label for="end-date" class="floating-label">End Date</label>
-                            <div class="error-message" id="end-date-error"></div>
-                        </div>
-
-                        <!-- Action Buttons -->
-                        <div class="action-buttons">
-                            <button type="submit" class="btn btn-primary" id="calculate-btn">
-                                <span class="btn-text">Calculate Difference</span>
-                                <div class="loading-spinner" style="display: none;"></div>
-                            </button>
-                            <button type="button" class="btn btn-secondary" id="reset-btn">
-                                Reset
-                            </button>
-                        </div>
-                    </form>
-                </div>
+  <div class="app-container">
+    <main class="main-container">
+      <!-- Date Selection Card -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">Date Selection</h2>
+        </div>
+        <div class="card-body">
+          <form id="date-form">
+            <div class="form-group">
+              <label for="start-date" class="form-label">Start Date</label>
+              <input type="date" id="start-date" class="form-input" required>
             </div>
-
-            <!-- Results Card -->
-            <div class="card">
-                <div class="card-header">
-                    <h2 class="card-title">
-                        Results
-                    </h2>
-                </div>
-                <div class="card-body">
-                    <div class="results-grid" id="results-container">
-                        <!-- Results will be populated here -->
-                    </div>
-                </div>
+            <div class="form-group">
+              <label for="end-date" class="form-label">End Date</label>
+              <input type="date" id="end-date" class="form-input" required>
             </div>
-        </main>
-    </div>
+            <button type="submit" class="button">Calculate Difference</button>
+          </form>
+        </div>
+      </div>
 
-    <!-- Success Message Template -->
-    <div class="success-message" id="success-message">
-        Value copied to clipboard!
-    </div>
+      <!-- Results Card -->
+      <div class="card">
+        <div class="card-header">
+          <h2 class="card-title">Results</h2>
+        </div>
+        <div class="card-body">
+          <div class="results-grid" id="results-container">
+            <!-- Results will be populated here -->
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
 
-    <script>
-        // Modern Date Difference Calculator
-        class DateDifferenceCalculator {
-            constructor() {
-                this.initializeElements();
-                this.setupEventListeners();
-                this.initializeDefaults();
-            }
+  <!-- Success Message -->
+  <div class="success-message" id="success-message">
+    Value copied to clipboard!
+  </div>
 
-            initializeElements() {
-                this.form = document.getElementById('date-form');
-                this.startDateInput = document.getElementById('start-date');
-                this.endDateInput = document.getElementById('end-date');
-                this.calculateBtn = document.getElementById('calculate-btn');
-                this.resetBtn = document.getElementById('reset-btn');
-                this.resultsContainer = document.getElementById('results-container');
-                this.successMessage = document.getElementById('success-message');
-            }
+  <script>
+    const form = document.getElementById('date-form');
+    const resultsContainer = document.getElementById('results-container');
+    const successMessage = document.getElementById('success-message');
 
-            setupEventListeners() {
-                // Form submission
-                this.form.addEventListener('submit', (e) => {
-                    e.preventDefault();
-                    this.calculateDifference();
-                });
+    function showSuccessMessage() {
+      successMessage.classList.add('show');
+      setTimeout(() => successMessage.classList.remove('show'), 2000);
+    }
 
-                // Reset button
-                this.resetBtn.addEventListener('click', () => this.resetForm());
+    function copyToClipboard(text) {
+      navigator.clipboard.writeText(text).then(showSuccessMessage);
+    }
 
-                // Preset buttons
-                document.querySelectorAll('.preset-btn').forEach(btn => {
-                    btn.addEventListener('click', (e) => {
-                        this.applyPreset(e.target.dataset.preset);
-                    });
-                });
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
 
-                // Real-time validation
-                this.startDateInput.addEventListener('change', () => this.validateDates());
-                this.endDateInput.addEventListener('change', () => this.validateDates());
+      const startDate = new Date(document.getElementById('start-date').value);
+      const endDate = new Date(document.getElementById('end-date').value);
 
-                // Keyboard shortcuts
-                document.addEventListener('keydown', (e) => {
-                    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
-                        e.preventDefault();
-                        this.calculateDifference();
-                    }
-                    if (e.key === 'Escape') {
-                        this.resetForm();
-                    }
-                });
-            }
+      if (isNaN(startDate) || isNaN(endDate)) return;
 
-            initializeDefaults() {
-                const today = new Date();
-                const tomorrow = new Date();
-                tomorrow.setDate(today.getDate() + 1);
+      const diffTime = Math.abs(endDate - startDate);
+      const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+      const diffWeeks = Math.floor(diffDays / 7);
+      const diffMonths = Math.floor(diffDays / 30.44);
+      const diffYears = Math.floor(diffDays / 365.25);
 
-                this.startDateInput.value = this.formatDateForInput(today);
-                this.endDateInput.value = this.formatDateForInput(tomorrow);
-                
-                // Initial calculation
-                setTimeout(() => this.calculateDifference(), 100);
-            }
-
-            formatDateForInput(date) {
-                return date.toISOString().split('T')[0];
-            }
-
-            applyPreset(preset) {
-                const now = new Date();
-                let startDate, endDate;
-
-                switch (preset) {
-                    case 'today':
-                        startDate = new Date(now);
-                        endDate = new Date(now);
-                        break;
-                    case 'week':
-                        startDate = new Date(now);
-                        startDate.setDate(now.getDate() - now.getDay());
-                        endDate = new Date(startDate);
-                        endDate.setDate(startDate.getDate() + 6);
-                        break;
-                    case 'month':
-                        startDate = new Date(now.getFullYear(), now.getMonth(), 1);
-                        endDate = new Date(now.getFullYear(), now.getMonth() + 1, 0);
-                        break;
-                    case 'year':
-                        startDate = new Date(now.getFullYear(), 0, 1);
-                        endDate = new Date(now.getFullYear(), 11, 31);
-                        break;
-                }
-
-                this.startDateInput.value = this.formatDateForInput(startDate);
-                this.endDateInput.value = this.formatDateForInput(endDate);
-                
-                // Trigger calculation
-                this.calculateDifference();
-            }
-
-            validateDates() {
-                const startDate = new Date(this.startDateInput.value);
-                const endDate = new Date(this.endDateInput.value);
-                const startError = document.getElementById('start-date-error');
-                const endError = document.getElementById('end-date-error');
-
-                // Clear previous errors
-                startError.textContent = '';
-                startError.classList.remove('show');
-                endError.textContent = '';
-                endError.classList.remove('show');
-
-                let isValid = true;
-
-                if (isNaN(startDate.getTime())) {
-                    this.showError(startError, 'Please enter a valid start date');
-                    isValid = false;
-                }
-
-                if (isNaN(endDate.getTime())) {
-                    this.showError(endError, 'Please enter a valid end date');
-                    isValid = false;
-                }
-
-                if (isValid && startDate > endDate) {
-                    this.showError(endError, 'End date must be after start date');
-                    isValid = false;
-                }
-
-                return isValid;
-            }
-
-            showError(errorElement, message) {
-                errorElement.textContent = message;
-                errorElement.classList.add('show');
-            }
-
-            async calculateDifference() {
-                if (!this.validateDates()) return;
-
-                // Show loading state
-                this.setLoadingState(true);
-
-                try {
-                    // Simulate calculation delay for better UX
-                    await new Promise(resolve => setTimeout(resolve, 300));
-
-                    const startDate = new Date(this.startDateInput.value);
-                    const endDate = new Date(this.endDateInput.value);
-
-                    const results = this.performCalculations(startDate, endDate);
-                    this.displayResults(results);
-
-                } catch (error) {
-                    console.error('Calculation error:', error);
-                    this.showError(document.getElementById('end-date-error'), 'An error occurred during calculation');
-                } finally {
-                    this.setLoadingState(false);
-                }
-            }
-
-            performCalculations(startDate, endDate) {
-                const timeDiff = Math.abs(endDate.getTime() - startDate.getTime());
-                
-                // Calculate different units
-                const totalDays = Math.floor(timeDiff / (1000 * 60 * 60 * 24)) + 1;
-                const totalHours = Math.floor(timeDiff / (1000 * 60 * 60));
-                const totalMinutes = Math.floor(timeDiff / (1000 * 60));
-                const totalSeconds = Math.floor(timeDiff / 1000);
-
-                // Calculate business days
-                const businessDays = this.calculateBusinessDays(startDate, endDate);
-
-                // Calculate weeks, months, years
-                const weeks = Math.floor(totalDays / 7);
-                const remainingDaysAfterWeeks = totalDays % 7;
-                
-                const months = this.calculateMonths(startDate, endDate);
-                const years = Math.floor(months / 12);
-                const remainingMonths = months % 12;
-
-                return {
-                    totalDays,
-                    businessDays,
-                    weeks,
-                    remainingDaysAfterWeeks,
-                    months,
-                    years,
-                    remainingMonths,
-                    totalHours,
-                    totalMinutes,
-                    totalSeconds
-                };
-            }
-
-            calculateBusinessDays(startDate, endDate) {
-                let count = 0;
-                const current = new Date(startDate);
-                const end = new Date(endDate);
-
-                while (current <= end) {
-                    const dayOfWeek = current.getDay();
-                    if (dayOfWeek !== 0 && dayOfWeek !== 6) {
-                        count++;
-                    }
-                    current.setDate(current.getDate() + 1);
-                }
-
-                return count;
-            }
-
-            calculateMonths(startDate, endDate) {
-                let months = (endDate.getFullYear() - startDate.getFullYear()) * 12;
-                months += endDate.getMonth() - startDate.getMonth();
-                
-                if (endDate.getDate() < startDate.getDate()) {
-                    months--;
-                }
-                
-                return Math.max(0, months);
-            }
-
-            displayResults(results) {
-                const resultItems = [
-                    {
-                        label: 'Total Days',
-                        value: results.totalDays.toLocaleString(),
-                        unit: results.totalDays === 1 ? 'day' : 'days',
-                        tooltip: 'Total number of days including start and end dates'
-                    },
-                    {
-                        label: 'Business Days',
-                        value: results.businessDays.toLocaleString(),
-                        unit: results.businessDays === 1 ? 'day' : 'days',
-                        tooltip: 'Weekdays only (Monday to Friday)'
-                    },
-                    {
-                        label: 'Weeks',
-                        value: results.weeks.toLocaleString(),
-                        unit: results.weeks === 1 ? 'week' : 'weeks',
-                        tooltip: `${results.weeks} weeks and ${results.remainingDaysAfterWeeks} days`
-                    },
-                    {
-                        label: 'Months',
-                        value: results.months.toLocaleString(),
-                        unit: results.months === 1 ? 'month' : 'months',
-                        tooltip: `${results.years} years and ${results.remainingMonths} months`
-                    },
-                    {
-                        label: 'Hours',
-                        value: results.totalHours.toLocaleString(),
-                        unit: results.totalHours === 1 ? 'hour' : 'hours',
-                        tooltip: 'Total hours between the dates'
-                    },
-                    {
-                        label: 'Minutes',
-                        value: results.totalMinutes.toLocaleString(),
-                        unit: results.totalMinutes === 1 ? 'minute' : 'minutes',
-                        tooltip: 'Total minutes between the dates'
-                    }
-                ];
-
-                this.resultsContainer.innerHTML = resultItems.map((item, index) => `
-                    <div class="result-card" style="animation-delay: ${index * 0.1}s">
-                        <button class="copy-btn" onclick="calculator.copyToClipboard('${item.value}')" title="Copy to clipboard">
-                            📋
-                        </button>
-                        <div class="result-label tooltip" data-tooltip="${item.tooltip}">
-                            ${item.label}
-                        </div>
-                        <div class="result-value animate-count" data-value="${item.value}">
-                            ${item.value}
-                        </div>
-                        <div class="result-unit">${item.unit}</div>
-                    </div>
-                `).join('');
-
-                // Animate numbers
-                this.animateNumbers();
-            }
-
-            animateNumbers() {
-                const valueElements = this.resultsContainer.querySelectorAll('.result-value');
-                
-                valueElements.forEach((element, index) => {
-                    setTimeout(() => {
-                        const finalValue = element.dataset.value;
-                        const numericValue = parseInt(finalValue.replace(/,/g, ''));
-                        
-                        if (!isNaN(numericValue) && numericValue > 0) {
-                            this.countUpAnimation(element, 0, numericValue, 800);
-                        }
-                    }, index * 100);
-                });
-            }
-
-            countUpAnimation(element, start, end, duration) {
-                const startTime = performance.now();
-                const range = end - start;
-
-                const updateNumber = (currentTime) => {
-                    const elapsed = currentTime - startTime;
-                    const progress = Math.min(elapsed / duration, 1);
-                    
-                    const easeOut = 1 - Math.pow(1 - progress, 3);
-                    const current = Math.floor(start + (range * easeOut));
-                    
-                    element.textContent = current.toLocaleString();
-                    
-                    if (progress < 1) {
-                        requestAnimationFrame(updateNumber);
-                    } else {
-                        element.textContent = end.toLocaleString();
-                    }
-                };
-
-                requestAnimationFrame(updateNumber);
-            }
-
-            async copyToClipboard(text) {
-                try {
-                    await navigator.clipboard.writeText(text);
-                    this.showSuccessMessage();
-                } catch (err) {
-                    console.error('Failed to copy: ', err);
-                    // Fallback for older browsers
-                    this.fallbackCopyToClipboard(text);
-                }
-            }
-
-            fallbackCopyToClipboard(text) {
-                const textArea = document.createElement('textarea');
-                textArea.value = text;
-                textArea.style.position = 'fixed';
-                textArea.style.opacity = '0';
-                document.body.appendChild(textArea);
-                textArea.focus();
-                textArea.select();
-                
-                try {
-                    document.execCommand('copy');
-                    this.showSuccessMessage();
-                } catch (err) {
-                    console.error('Fallback copy failed: ', err);
-                }
-                
-                document.body.removeChild(textArea);
-            }
-
-            showSuccessMessage() {
-                this.successMessage.classList.add('show');
-                setTimeout(() => {
-                    this.successMessage.classList.remove('show');
-                }, 3000);
-            }
-
-            setLoadingState(loading) {
-                const btnText = this.calculateBtn.querySelector('.btn-text');
-                const spinner = this.calculateBtn.querySelector('.loading-spinner');
-                
-                if (loading) {
-                    this.calculateBtn.classList.add('btn-loading');
-                    this.calculateBtn.disabled = true;
-                    btnText.style.display = 'none';
-                    spinner.style.display = 'block';
-                } else {
-                    this.calculateBtn.classList.remove('btn-loading');
-                    this.calculateBtn.disabled = false;
-                    btnText.style.display = 'block';
-                    spinner.style.display = 'none';
-                }
-            }
-
-            resetForm() {
-                // Reset to default values
-                const today = new Date();
-                const tomorrow = new Date();
-                tomorrow.setDate(today.getDate() + 1);
-
-                this.startDateInput.value = this.formatDateForInput(today);
-                this.endDateInput.value = this.formatDateForInput(tomorrow);
-
-                // Clear errors
-                document.querySelectorAll('.error-message').forEach(el => {
-                    el.textContent = '';
-                    el.classList.remove('show');
-                });
-
-                // Recalculate
-                this.calculateDifference();
-            }
-        }
-
-        // Initialize the calculator when DOM is loaded
-        let calculator;
-        document.addEventListener('DOMContentLoaded', () => {
-            calculator = new DateDifferenceCalculator();
-        });
-
-        // Expose calculator to global scope for inline event handlers
-        window.calculator = calculator;
-    </script>
+      resultsContainer.innerHTML = `
+        <div class="result-item">
+          <span class="result-label">Days:</span>
+          <span class="result-value" onclick="copyToClipboard('${diffDays} days')">${diffDays}</span>
+        </div>
+        <div class="result-item">
+          <span class="result-label">Weeks:</span>
+          <span class="result-value" onclick="copyToClipboard('${diffWeeks} weeks')">${diffWeeks}</span>
+        </div>
+        <div class="result-item">
+          <span class="result-label">Months (approx):</span>
+          <span class="result-value" onclick="copyToClipboard('${diffMonths} months')">${diffMonths}</span>
+        </div>
+        <div class="result-item">
+          <span class="result-label">Years (approx):</span>
+          <span class="result-value" onclick="copyToClipboard('${diffYears} years')">${diffYears}</span>
+        </div>
+      `;
+    });
+  </script>
 </body>
 </html>
