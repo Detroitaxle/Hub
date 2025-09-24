@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Date Difference Calculator - Professional Edition</title>
+  <title>Date Difference Calculator</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -18,10 +18,8 @@
       --text-secondary: #cbd5e1;
       --border-color: #334155;
       --success-color: #22c55e;
-      --error-color: #ef4444;
       --spacing-unit: 0.5rem;
       --radius-lg: 0.75rem;
-      --radius-full: 9999px;
       --transition-base: all 0.2s ease-in-out;
     }
 
@@ -41,17 +39,17 @@
     .app-container {
       min-height: 100vh;
       display: flex;
-      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
       padding: calc(var(--spacing-unit) * 3);
     }
 
     .main-container {
-      flex: 1;
       display: grid;
+      grid-template-columns: 1fr 1fr;
       gap: calc(var(--spacing-unit) * 3);
       max-width: 1000px;
       width: 100%;
-      margin: 0 auto;
     }
 
     .card {
@@ -105,27 +103,6 @@
       outline: none;
       border-color: var(--primary-color);
       box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.3);
-    }
-
-    .button {
-      padding: calc(var(--spacing-unit) * 2) calc(var(--spacing-unit) * 4);
-      border-radius: var(--radius-lg);
-      border: none;
-      background: var(--primary-color);
-      color: white;
-      font-weight: 500;
-      font-size: 0.95rem;
-      cursor: pointer;
-      transition: var(--transition-base);
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: calc(var(--spacing-unit) * 1.5);
-    }
-
-    .button:hover {
-      background: var(--primary-hover);
-      transform: translateY(-1px);
     }
 
     .results-grid {
@@ -186,12 +163,9 @@
       transform: translateY(0);
     }
 
-    @media (max-width: 640px) {
-      .app-container {
-        padding: var(--spacing-unit);
-      }
-      .card {
-        padding: calc(var(--spacing-unit) * 3);
+    @media (max-width: 768px) {
+      .main-container {
+        grid-template-columns: 1fr;
       }
     }
   </style>
@@ -205,17 +179,14 @@
           <h2 class="card-title">Date Selection</h2>
         </div>
         <div class="card-body">
-          <form id="date-form">
-            <div class="form-group">
-              <label for="start-date" class="form-label">Start Date</label>
-              <input type="date" id="start-date" class="form-input" required>
-            </div>
-            <div class="form-group">
-              <label for="end-date" class="form-label">End Date</label>
-              <input type="date" id="end-date" class="form-input" required>
-            </div>
-            <button type="submit" class="button">Calculate Difference</button>
-          </form>
+          <div class="form-group">
+            <label for="start-date" class="form-label">Start Date</label>
+            <input type="date" id="start-date" class="form-input" required>
+          </div>
+          <div class="form-group">
+            <label for="end-date" class="form-label">End Date</label>
+            <input type="date" id="end-date" class="form-input" required>
+          </div>
         </div>
       </div>
 
@@ -239,7 +210,8 @@
   </div>
 
   <script>
-    const form = document.getElementById('date-form');
+    const startDateInput = document.getElementById('start-date');
+    const endDateInput = document.getElementById('end-date');
     const resultsContainer = document.getElementById('results-container');
     const successMessage = document.getElementById('success-message');
 
@@ -252,11 +224,9 @@
       navigator.clipboard.writeText(text).then(showSuccessMessage);
     }
 
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-
-      const startDate = new Date(document.getElementById('start-date').value);
-      const endDate = new Date(document.getElementById('end-date').value);
+    function calculateAndDisplay() {
+      const startDate = new Date(startDateInput.value);
+      const endDate = new Date(endDateInput.value);
 
       if (isNaN(startDate) || isNaN(endDate)) return;
 
@@ -284,7 +254,19 @@
           <span class="result-value" onclick="copyToClipboard('${diffYears} years')">${diffYears}</span>
         </div>
       `;
-    });
+    }
+
+    // Auto-fill today’s date on load
+    const today = new Date().toISOString().split('T')[0];
+    startDateInput.value = today;
+    endDateInput.value = today;
+
+    // Calculate on load
+    calculateAndDisplay();
+
+    // Live update on change
+    startDateInput.addEventListener('change', calculateAndDisplay);
+    endDateInput.addEventListener('change', calculateAndDisplay);
   </script>
 </body>
 </html>
